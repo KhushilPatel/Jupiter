@@ -3,12 +3,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useAuth } from '@/store/auth';
-// import { Cookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 const NavbarRoute = () => {
     const router=useRouter();
-    // const cookies = new Cookies();
+    const cookies = new Cookies();
     const logout=()=>{
-        // cookies.remove("accessToken")
+        cookies.remove("auth")
        router.push('/login')
     }
   
