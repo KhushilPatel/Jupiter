@@ -3,19 +3,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useAuth } from '@/store/auth';
-// import Cookies from 'js-cookie';
+// import { Cookies } from 'react-cookie';
 const NavbarRoute = () => {
     const router=useRouter();
-    const {LogoutUser}:any=useAuth()
-    const logout=async()=>{
-      try {
-       LogoutUser()
+    // const cookies = new Cookies();
+    const logout=()=>{
+        // cookies.remove("accessToken")
        router.push('/login')
-      } catch (error:any) {
-        console.log(error.message);
-        
-        
-      }
     }
   
     return (

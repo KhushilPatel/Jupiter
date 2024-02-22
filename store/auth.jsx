@@ -9,12 +9,8 @@ export const AuthProvider=({children})=>{
            return  Cookies.set('token', token, { expires: 7 });
         }
 
-        const LogoutUser=()=>{
-            settoken("")
-            return  Cookies.remove('token'); 
-        }
     return(
-        <AuthContext.Provider value={{storeTokenInCookies,LogoutUser}}>
+        <AuthContext.Provider value={{storeTokenInCookies}}>
             {children}
         </AuthContext.Provider>
     )

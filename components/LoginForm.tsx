@@ -7,7 +7,7 @@ import axios from 'axios';
 import OTPInput from 'react-otp-input';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie'; 
-import { useAuth } from '@/store/auth';
+import { useCookies } from 'react-cookie';
 
 
 type formData={
@@ -19,6 +19,7 @@ const LoginForm = () => {
     const [val, setval]:any = useState()
     const [isOtpVerification, setisOtpVerification] = useState(false)
     const [otp, setotp]:any = useState()
+    const [cookies, setCookie] = useCookies(['auth']);
 
     const router=useRouter()
 
@@ -94,7 +95,7 @@ const handleOtpSubmit = async (e: any) => {
       // Generate Token and store into cookies
       if (response.data && response.data.session.accessToken) {
         const token = response.data.session.accessToken;
-        Cookies.set('token', token, { expires: 7 }); // Set the token in cookies, expires in 7 days
+        setCookie('auth', token, { expires: new Date(Date.now() + 5* 60 * 1000) });
         console.log("token:",token);
         // storeTokenInCookies(token)
         alert('Logged In');
