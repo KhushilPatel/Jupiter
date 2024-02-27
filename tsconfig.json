@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "store/auth.jsx", "pages/home.jsx", "middleware.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "store/auth.jsx", "pages/home.tsx", "middleware.ts", "pages/dashboard.jsx", "pages/patient.tsx"],
   "exclude": ["node_modules"]
 }
