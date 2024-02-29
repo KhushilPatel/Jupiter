@@ -29,12 +29,12 @@ const patient = () => {
   }, []);
 
   return (
-    <div className='flex'>
+    <div className='flex  '>
       <div className='w-1/4 pr-8 bg-gray-100 rounded-lg'>
         <div className='text-center mb-8'>
           <h1 className='font-bold text-4xl py-4 bg-red-300 rounded-t-lg'>Patient List</h1>
         </div>
-        <div className='overflow-y-auto max-h-screen px-4'>
+        <div className='overflow-y-auto max-h-screen px-4 '>
           <ul className='list-disc pl-4 '>
             {table?.list?.map((item: any) => (
               <li onClick={()=>router.push({

@@ -40,12 +40,13 @@ const Patient_details = () => {
   }, [d]);
 
   return (
-    <div className='container mx-auto mt-8 p-8'>
+    <div className='container mx-auto mt-8 p-8 '>
       <h1 className='font-bold text-4xl mb-4'>Patient Details</h1>
-      {loading ? (
-        <RingLoader color='#007BFF' css={override} size={60} />
+      {loading ? (<>
+          <RingLoader color='#007BFF' css={override} size={60} />
+      </> 
       ) : Object.keys(table).length > 0 ? (
-        <div className='bg-white p-6 rounded-lg shadow-md'>
+        <div className='bg-white p-6 rounded-lg shadow-md '>
           <p className='text-xl font-semibold'>ID: {table.id}</p>
           <p className='text-xl font-semibold'>Name: {table.firstName}</p>
           <p className='text-lg'>Gender: {table.gender}</p>
