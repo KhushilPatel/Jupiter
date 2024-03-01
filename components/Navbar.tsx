@@ -25,21 +25,13 @@ const NavbarRoute = () => {
 
           <div className="flex gap-[330px] py-1">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 flex space-x-7">
-         
-              <li className="nav-item">
-                <Link className="nav-link" href="/register">Register</Link>
-              </li>
               <div>
-
                 <button onClick={logout} className='bg-red-500'>Logout</button>
               </div>
             </ul>
             <form className="flex justify-end space-x-3  " role="search">
 
-              <div className='search-bar'>
-                <input className="form-control me-2 " type="search" placeholder="Search" aria-label="Search" />
-                <button className="search text-sm h-7 my-4 " type="submit" onClick={e => { alert("sorry,we can't search") }}>Search</button>
-              </div>
+             
 
             </form>
           </div>

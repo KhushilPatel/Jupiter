@@ -30,7 +30,7 @@ const LoginForm = ()=> {
    })
 
   const {register,handleSubmit,formState:{errors,isSubmitting}}=useForm<formData>({resolver:zodResolver(schema)}); 
-
+  
 
   const submitData = async (data: any) => {
     console.log("It worked", data);
