@@ -23,6 +23,7 @@ const Product_List = () => {
 
   const ProductList = async () => {
     try {
+      setLoading(true);
       const payload = {
         Authorization: `Bearer ${auth}`,
       };

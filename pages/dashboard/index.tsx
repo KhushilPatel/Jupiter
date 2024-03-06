@@ -19,11 +19,10 @@ const Dashboard = () => {
       <Head>
         <title>Dashboard</title>
       </Head>
-     <div className='w-[20%] min-h-screen'>
-
+     <div className='w-[17%] min-h-screen'>
       <Sider/>
      </div>
-
+  
       <div className="flex-1 flex flex-col overflow-hidden ">
         {/* Navbar */}
         <header className="bg-white border-b-2 border-gray-200 sticky top-0">
