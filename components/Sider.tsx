@@ -1,27 +1,38 @@
-
-import React from 'react'
+import Link from 'next/link';
+import React from 'react';
 
 const Sider = () => {
   return (
-    <div  className="flex h-screen bg-gray-100">
+    <div className="flex flex-col w-full h-full bg-gray-100">
       {/* Left Panel */}
-   <div className="w-1/6 bg-gray-800 text-white">
-   <div className="p-4">
-     <h1 className="text-2xl font-bold">Logo</h1>
-   </div>
-   
-   {/* Add navigation links or icons for the left panel */}
-   <nav className="space-y-4 mt-4">
-     <a href="#" className="block p-2 hover:bg-gray-700">Dashboard</a>
-     <a href="#" className="block p-2 hover:bg-gray-700">Statistics</a>
-     <a href="#" className="block p-2 hover:bg-gray-700">Users</a>
-     {/* Add more links as needed */}
-   </nav>
- </div>
+      
+        <div className="p-4 bg-gray-900">
+          <h1 className="text-2xl font-bold text-white">Logo</h1>
+        </div>
+
+        <nav className="space-y-4 mt-4">
+          <Link
+            href="/dashboard"
+            className="block p-2 hover:bg-gray-700 transition duration-300 ease-in-out"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/patient"
+            className="block p-2 hover:bg-gray-700 transition duration-300 ease-in-out"
+          >
+            Patient-List
+          </Link>
+          <Link
+            href="/product"
+            className="block p-2 hover:bg-gray-700 transition duration-300 ease-in-out"
+          >
+            Product-List
+          </Link>
+        </nav>
+  
     </div>
-  )
-}
+  );
+};
 
-export default Sider
-
-
+export default Sider;
