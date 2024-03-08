@@ -43,11 +43,20 @@ const Product_Details = () => {
       {loading ? (
         <RingLoader color='#007BFF' size={60}  />
       ) : Object.keys(productDetail).length > 0 ? (
-        <div className='bg-white p-6 rounded-lg shadow-md '>
+        <div className='bg-red-300 p-6 rounded-lg shadow-md '>
      
-          <p className='text-xl font-semibold'>ID: {productDetail?.name}</p>
+          <p className='text-3xl font-semibold text-center'>Name: {productDetail?.name}</p>
        
-
+       <div className='flex'>
+        <div className='flex border-2 border-amber-100 rounded-md object-center '>
+        <img className='rounded-md ' src={productDetail?.image[0]?.description} alt="Not Image Found" />
+        </div>
+        <div className="flex flex-col mt-20 ml-5 pl-32  w-full content-center  gap-7  ">
+        <p className='text-xl font-serif font-medium  border-2 p-4 border-black rounded-md bg-orange-100'>id={productDetail?.id}</p>
+        <p className='text-xl font-serif font-medium border-2  p-4 border-black rounded-md bg-orange-100 '>Condition-Level="{productDetail?.conditionLevel}"</p>
+   
+        </div>
+       </div>
         </div>
         
       ) : null}

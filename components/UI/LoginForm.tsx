@@ -7,8 +7,8 @@ import axios from 'axios';
 import OTPInput from 'react-otp-input';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
-import Loader  from '../components/Loader'
-
+import Loader  from './Loader'
+import { useApi } from '@/store/context';
 type formData={
     email:string;
     password:string;
@@ -21,7 +21,7 @@ const LoginForm = ()=> {
   const [otp, setotp]:any = useState();
   const [cookies, setCookie] = useCookies(["auth"]);
   const [loading, setLoading] = useState(false); // Added loading state
-
+ const api=useApi()
   const router = useRouter();
 
   const schema:ZodType<formData> =z.object({
@@ -38,7 +38,8 @@ const LoginForm = ()=> {
     try {
       setLoading(true); // Show loader when the form is submitted
 
-      let x = await axios.post('https://jupiter.cmdev.cc/admin/auth/login', data);
+      // let x = await axios.post('https://jupiter.cmdev.cc/admin/auth/login', data);
+      let x=await api.logInApi(data);
 
       console.log(x);
       console.log(x.data);
@@ -70,7 +71,8 @@ const LoginForm = ()=> {
 
       console.log(otp, 'is valid');
 
-      const response = await axios.post('https://jupiter.cmdev.cc/admin/auth/otp-verify', payload);
+      // const response = await axios.post('https://jupiter.cmdev.cc/admin/auth/otp-verify', payload);
+      const response=await api.verifyOtpApi(payload);
 
       console.log("Data", response.data);
 

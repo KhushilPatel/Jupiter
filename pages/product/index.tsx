@@ -1,5 +1,5 @@
 import Product_List from "@/components/Product/List/Product-List";
-import Sider from "@/components/Sider";
+import Sider from "@/components/UI/Sider";
 
 const Product = () => {
   

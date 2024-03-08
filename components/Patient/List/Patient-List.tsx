@@ -5,18 +5,18 @@ import { useRouter } from 'next/router';
 import { RingLoader } from 'react-spinners';
 import Patient_details from '@/components/Patient/Details/Patient_details';
 import { Avatar } from "evergreen-ui"
-
-
+import { useApi } from '@/store/context';
+import debounce from 'lodash.debounce';
 const PAGE_SIZE = 10;
 const Patient_List = () => {
     const [table, setTable]: any = useState([]);
     const [loading, setLoading] = useState(true);
     const [paginationLoading, setPaginationLoading] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery]:any = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [{ auth }] = useCookies(['auth']);
     const router = useRouter();
-
+const api = useApi();
     // Pagination
     const getTotalPages = () => {
         return Math.ceil(table.total / PAGE_SIZE);
@@ -29,10 +29,11 @@ const Patient_List = () => {
                 Authorization: `Bearer ${auth}`,
             };
 
-            let response = await axios.get('https://jupiter.cmdev.cc/admin/patient-user', {
-                headers: payload,
-                params: { skip: (currentPage - 1) * PAGE_SIZE, take: PAGE_SIZE, search: searchQuery },
-            });
+            // let response = await axios.get('https://jupiter.cmdev.cc/admin/patient-user', {
+            //     headers: payload,
+            //     params: { skip: (currentPage - 1) * PAGE_SIZE, take: PAGE_SIZE, search: searchQuery },
+            // });
+            let response = await api.patientsApi(payload, { skip: (currentPage - 1) * PAGE_SIZE, take: PAGE_SIZE, search: searchQuery });
             console.log('patient details', response);
             setTable(response.data);
         } catch (error) {
@@ -49,10 +50,11 @@ const Patient_List = () => {
                 Authorization: `Bearer ${auth}`,
             };
 
-            let response = await axios.get('https://jupiter.cmdev.cc/admin/patient-user', {
-                headers: payload,
-                params: { search: searchQuery },
-            });
+            // let response = await axios.get('https://jupiter.cmdev.cc/admin/patient-user', {
+            //     headers: payload,
+            //     params: { search: searchQuery },
+            // });
+            let response = await api.patientsApi(payload, { skip: (currentPage - 1) * PAGE_SIZE, take: PAGE_SIZE, search: searchQuery });
             console.log('patient details after search', response);
             setTable(response.data);
         } catch (error) {
@@ -79,8 +81,13 @@ const Patient_List = () => {
         }
     };
 
+
+  const debouncedSearch = debounce((value: string) => {
+    setSearchQuery(value);
+  }, 500);
+
     return (
-        <div className='flex h-screen '>
+        <div className='flex h-full '>
             <div className='w-1/4 pr-8 bg-gray-100 rounded-lg'>
                 <div className='text-center mb-8'>
                     <h1 className='font-bold text-4xl py-4 bg-red-300 rounded-t-lg'>Patient List</h1>
@@ -91,15 +98,15 @@ const Patient_List = () => {
                         placeholder='Search by name...'
                         className='w-full p-2 border rounded focus:outline-none focus:border-blue-300'
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => debouncedSearch(e.target.value)}
                     />
                 </div>
-                <div className='overflow-y-auto max-h-screen px-4'>
+                <div className='overflow-y-auto min-h-screen px-4'>
                     {loading ? (
                         <RingLoader color='#007BFF' loading={loading} size={40} />
                     ) : (
                         <>
-                            <ul className='list-disc pl-4 h-[550px] overflow-auto'>
+                            <ul className='flex flex-col list-disc pl-4 h-screen gap-6 overflow-auto'>
                                 {table?.list?.map((item: any) => {
                                     return (
                                         <div className='flex border-b-2 py-2 items-center cursor-pointer transition duration-300 hover:bg-gray-100'>
@@ -112,7 +119,8 @@ const Patient_List = () => {
                                                     onClick={() => router.push({
                                                         query: { d: item?.id },
                                                     })}
-                                                    className='mb-2 font-bold text-lg'
+                                                    className='mb-2 font-bol
+                                                     text-lg'
                                                 >
                                                     {item?.firstName} {item?.lastName}
                                                 </li>

@@ -30,10 +30,15 @@ const router=useRouter()
             >
             Product-List
             </Link>
+            <Link
+            href="/Assessment"
+            className={`block p-2 hover:bg-gray-700 transition duration-300 ease-in-out ${router.pathname === '/Assessment' ? 'bg-gray-700' : ''}`}
+            >
+            Assessment-Mgmt.
+            </Link>
           </nav>
-        
         </div>
-        );
-};
+        )
+}
 
 export default Sider;

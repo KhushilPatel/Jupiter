@@ -1,5 +1,5 @@
 import Patient_List from '@/components/Patient/List/Patient-List';
-import Sider from '@/components/Sider';
+import Sider from '@/components/UI/Sider';
 
 const Patient = () => {
   return (

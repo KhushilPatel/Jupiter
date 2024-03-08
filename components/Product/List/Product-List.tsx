@@ -1,170 +1,133 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 import { RingLoader } from 'react-spinners';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
-
+import InfiniteScroll from 'react-infinite-scroller';
+import debounce from 'lodash.debounce';
+import { useApi } from '@/store/context';
 const PAGE_SIZE = 10;
 
-
 const Product_List = () => {
-    const [{ auth }] = useCookies(['auth']);
-  const [productDetail, setProductDetail]: any = useState();
+  const [{ auth }] = useCookies(['auth']);
+  const [productDetail, setProductDetail] = useState<any>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const getTotalPages = () => {
-    return Math.ceil(productDetail?.total / PAGE_SIZE);
-  };
-
-
-
+const api=useApi()
   const ProductList = async () => {
     try {
       setLoading(true);
       const payload = {
         Authorization: `Bearer ${auth}`,
       };
-    
+
       const params = {
         skip: (currentPage - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
         search: searchQuery,
-        orderBy: "createdAt|desc", 
+        orderBy: 'createdAt|desc',
         'search_column[]': ['name'],
-    };
-      let response = await axios.get('https://jupiter.cmdev.cc/admin/product', {
-        headers: payload,
-        params: params
-      });
-      console.log('product details', response);
+      };
+
+      // let response = await axios.get('https://jupiter.cmdev.cc/admin/product', {
+      //   headers: payload,
+      //   params: params,
+      // });
+      let response = await api.productsApi(payload, params);
 
       setProductDetail(response.data);
     } catch (error) {
       console.error('Error fetching product details:', error);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
     ProductList();
-  }, [currentPage,searchQuery]);
- 
+  }, [currentPage, searchQuery]);
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+  const loadMore = async (page: number) => {
+    try {
+      setLoading(true);
+      const payload = {
+        Authorization: `Bearer ${auth}`,
+      };
+
+      const params = {
+        skip: page * PAGE_SIZE,
+        take: PAGE_SIZE,
+        search: searchQuery,
+        orderBy: 'createdAt|desc',
+        'search_column[]': ['name'],
+      };
+
+      // let response = await axios.get('https://jupiter.cmdev.cc/admin/product', {
+      //   headers: payload,
+      //   params: params,
+      // });
+      let response = await api.productsApi(payload, params);
+
+      setProductDetail({
+        list: [...productDetail?.list, ...response?.data?.list],
+        count: productDetail?.count + response?.data?.count,
+        hasMany: response?.data?.hasMany,
+        total: response?.data?.total,
+      });
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const debouncedSearch = debounce((value: string) => {
+    setSearchQuery(value);
+  }, 1000);
+
   return (
-    <div className='h-screen overflow-auto'>
-       <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Product List</h1>
-      <div className='flex items-center justify-between mb-4 px-4'>
+    <div className='h-screen overflow-auto bg-gray-100 p-8'>
+      <h1 className='text-3xl font-bold text-center mb-8'>Product List</h1>
+      <div className='flex items-center justify-between mb-4'>
         <input
           type='text'
           placeholder='Search by name...'
           className='w-full p-2 border rounded focus:outline-none focus:border-blue-300'
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => debouncedSearch(e.target.value)}
         />
       </div>
-      <table className='w-full border border-collapse'>
-        <thead>
-          <tr className='bg-gray-200'>
-            <th className='border p-4'>Product Name</th>
-            <th className='border p-4'>Images</th>
-            <th className='border p-4'>Dosage</th>
-          </tr>
-        </thead>
-        {loading ? (
-            <RingLoader color='#007BFF' loading={loading} size={40} />
-          ) : (
-        <tbody>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadMore}
+        hasMore={productDetail?.hasMany}
+        loader={<RingLoader key={0} color='#007BFF' loading={true} size={40} />}
+        useWindow={false}
+        threshold={100}
+      >
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          {loading && <RingLoader key={0} color='#007BFF' loading={true} size={40} />}
           {productDetail?.list?.map((item: any, index: number) => (
-        
-            <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
-              <td className='border p-4 cursor-pointer'  key={item.id}
-            onClick={()=>{router.push(`/product/${item?.id}`)}}>{item?.name}</td>
-              <td className='border p-4'>
-                <img className='h-32 mx-auto' src={item?.image[0]?.description} alt="Product Image" />
-              </td>
-              <td className='border p-4'>{item?.dosage}{item?.dosageUnit === "NUMBER" ? "Capsule" : item?.dosageUnit}</td>
-            </tr>
-       
+            <div
+              key={index}
+              className='bg-white rounded-lg overflow-hidden shadow-md cursor-pointer'
+              onClick={() => {
+                router.push(`/product/${item?.id}`);
+              }}
+            >
+              <img className='h-32 w-full object-cover' src={item?.image[0]?.description} alt='Sorry!There is not image' />
+              <div className='p-4'>
+                <div className='font-bold text-xl mb-2'>{item?.name}</div>
+                <p className='text-gray-700'>{item?.dosage}</p>
+                <p className='text-gray-700'>{item?.price}{'$'}</p>
+              </div>
+            </div>
           ))}
-        </tbody>
-      )}
-      </table>
-
-    {/* Pagination */}
-<div className='flex justify-center mt-4'>
-  {currentPage > 1 && (
-    <button
-      onClick={() => handlePageChange(currentPage - 1)}
-      className='mx-2 rounded-1xl bg-gray-300'
-    >
-      &lt; Prev
-    </button>
-  )}
-
-  {currentPage > 2 && (
-    <button
-      onClick={() => handlePageChange(1)}
-      className={`mx-2 rounded-1xl bg-gray-300`}
-    >
-      1
-    </button>
-  )}
-
-  {currentPage > 3 && (
-    <span className='mx-2 text-lg'>...</span>
-  )}
-
-  {Array.from({ length: Math.min(3, getTotalPages()) }).map((_, index) => {
-    const page = currentPage - 1 + index;
-    return (
-      page <= getTotalPages() && (
-        <button
-          key={index}
-          onClick={() => handlePageChange(page)}
-          className={`mx-2 rounded-1xl ${
-            currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-300'
-          }`}
-        >
-          {page}
-        </button>
-      )
-    );
-  })}
-
-  {currentPage + 3 < getTotalPages() && (
-    <span className='mx-2 text-lg'>...</span>
-  )}
-
-  {currentPage + 3 <= getTotalPages() && (
-    <button
-      onClick={() => handlePageChange(getTotalPages())}
-      className={`mx-2 rounded-1xl ${
-        currentPage === getTotalPages() ? 'bg-blue-500 text-white' : 'bg-gray-300'
-      }`}
-    >
-      {getTotalPages()}
-    </button>
-  )}
-
-  {currentPage < getTotalPages() && (
-    <button
-      onClick={() => handlePageChange(currentPage + 1)}
-      className='mx-2 rounded-1xl bg-gray-300'
-    >
-      Next &gt;
-    </button>
-  )}
-</div>
+        </div>
+      </InfiniteScroll>
     </div>
-  )
-}
+  );
+};
 
-export default Product_List
+export default Product_List;

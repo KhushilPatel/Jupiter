@@ -4,14 +4,14 @@ import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { RingLoader } from 'react-spinners';
-
+import { useApi } from '@/store/context';
 const Patient_details = () => {
   const [table, setTable]: any = useState({});
   const [loading, setLoading] = useState(false); // Set initial loading state to false
   const router = useRouter();
   const { d } = router.query;
   const [{ auth }] = useCookies(['auth']);
-
+const api = useApi();
 
   const PatientList = async () => {
     try {
@@ -20,7 +20,8 @@ const Patient_details = () => {
         Authorization: `Bearer ${auth}`,
       };
 
-      let response = await axios.get(`https://jupiter.cmdev.cc/admin/patient-user/${d}`, { headers: payload });
+      // let response = await axios.get(`https://jupiter.cmdev.cc/admin/patient-user/${d}`, { headers: payload });
+      const response=await api.patientDetailsApi(payload,d);
       setTable(response.data);
     } catch (error) {
       console.error('Data not retrieved', error);

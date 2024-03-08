@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { useAuth } from '@/store/auth';
+
 import { Cookies } from 'react-cookie';
 import Image from 'next/image';
 import logo from '@/components/Images/login.png'

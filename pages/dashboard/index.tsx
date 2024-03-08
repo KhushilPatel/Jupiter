@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import NavbarRoute from '@/components/Navbar';
+import NavbarRoute from '@/components/UI/Navbar';
 import { useRouter } from 'next/router';
-// import Patient_List from '@/pages/patient';
 import Patient_List from '@/components/Patient/List/Patient-List';
 import Product_List from '@/components/Product/List/Product-List';
-import Sider from '@/components/Sider';
+import Assessment_List from '@/components/Assessment/AssessmentList/Assessment_List';
+import Sider from '@/components/UI/Sider';
 const Dashboard = () => {
   const [selectedNavItem, setSelectedNavItem] = useState('dashboard');
   const router = useRouter();
@@ -45,6 +45,11 @@ const Dashboard = () => {
             {selectedNavItem === 'Product-List' && (
               <div>
                 <Product_List />
+              </div>
+            )}
+            {selectedNavItem === 'Assessment Mgmt.' && (
+              <div>
+                <Assessment_List />
               </div>
             )}
           </div>
