@@ -4,7 +4,7 @@ import NavbarRoute from '@/components/UI/Navbar';
 import { useRouter } from 'next/router';
 import Patient_List from '@/components/Patient/List/Patient-List';
 import Product_List from '@/components/Product/List/Product-List';
-import Assessment_List from '@/components/Assessment/AssessmentList/Assessment_List';
+import Assessment_List from '@/components/Assessment/List/Assessment_List';
 import Sider from '@/components/UI/Sider';
 const Dashboard = () => {
   const [selectedNavItem, setSelectedNavItem] = useState('dashboard');

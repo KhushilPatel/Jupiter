@@ -1,4 +1,4 @@
-import Assessment_List from '@/components/Assessment/AssessmentList/Assessment_List'
+import Assessment_List from '@/components/Assessment/List/Assessment_List'
 import React from 'react'
 import Sider from '@/components/UI/Sider'
 const index = () => {

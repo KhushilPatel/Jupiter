@@ -11,7 +11,6 @@ const PAGE_SIZE = 10;
 const Product_List = () => {
   const [{ auth }] = useCookies(['auth']);
   const [productDetail, setProductDetail] = useState<any>();
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -24,7 +23,7 @@ const api=useApi()
       };
 
       const params = {
-        skip: (currentPage - 1) * PAGE_SIZE,
+        skip: 0* PAGE_SIZE,
         take: PAGE_SIZE,
         search: searchQuery,
         orderBy: 'createdAt|desc',
@@ -47,7 +46,7 @@ const api=useApi()
 
   useEffect(() => {
     ProductList();
-  }, [currentPage, searchQuery]);
+  }, [ searchQuery]);
 
   const loadMore = async (page: number) => {
     try {
@@ -63,11 +62,6 @@ const api=useApi()
         orderBy: 'createdAt|desc',
         'search_column[]': ['name'],
       };
-
-      // let response = await axios.get('https://jupiter.cmdev.cc/admin/product', {
-      //   headers: payload,
-      //   params: params,
-      // });
       let response = await api.productsApi(payload, params);
 
       setProductDetail({
@@ -119,7 +113,7 @@ const api=useApi()
               <img className='h-32 w-full object-cover' src={item?.image[0]?.description} alt='Sorry!There is not image' />
               <div className='p-4'>
                 <div className='font-bold text-xl mb-2'>{item?.name}</div>
-                <p className='text-gray-700'>{item?.dosage}</p>
+                <p className='text-gray-700'>{item?.dosage}gm</p>
                 <p className='text-gray-700'>{item?.price}{'$'}</p>
               </div>
             </div>
