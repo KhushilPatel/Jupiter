@@ -1,4 +1,4 @@
-import Assessment_List from '@/components/Assessment/List/Assessment_List'
+import AssessmentList from '@/components/Assessment/List/Assessment_List'
 import React from 'react'
 import Sider from '@/components/UI/Sider'
 const index = () => {
@@ -8,7 +8,7 @@ const index = () => {
       <Sider />
     </div>
     <div className="w-full h-full">
-      <Assessment_List />
+      <AssessmentList />
     </div>
   </div>
   )
