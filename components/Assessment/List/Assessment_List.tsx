@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useApi } from "@/store/context";
 import { useCookies } from "react-cookie";
 import { RingLoader } from "react-spinners";
-import Select from "react-select";
-
+// import Select from "react-select";
+import CustomSelect from "@/components/ReactSelect/CustomSelect";
 const PAGE_SIZE = 20;
 
 const Assessment_List = () => {
   const [{ auth }] = useCookies(["auth"]);
   const [loading, setLoading] = useState(true);
-  const [assessmentDetail, setAssessmentDetail]:any = useState({
+  const [assessmentDetail, setAssessmentDetail]: any = useState({
     list: [],
     count: 0,
     hasMany: false,
@@ -17,7 +17,7 @@ const Assessment_List = () => {
   });
   const [selectedPerson, setSelectedPerson] = useState(null);
   const api = useApi();
-  const [currentPage, setCurrentPage] = useState(1); // Track current page
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     assessmentList();
@@ -30,7 +30,7 @@ const Assessment_List = () => {
         Authorization: `Bearer ${auth}`,
       };
       const params = {
-        skip: (currentPage - 1) * PAGE_SIZE, // Calculate skip based on current page
+        skip: (currentPage - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
         orderBy: "createdAt|desc",
         "include[]": [
@@ -60,43 +60,41 @@ const Assessment_List = () => {
     setCurrentPage(currentPage + 1); // Increment current page
   };
 
-  const options = assessmentDetail?.list?.map((item:any) => ({
+  const options = assessmentDetail?.list?.map((item: any) => ({
     value: item.id,
     label: `${item?.assessmentHasPatientProfile?.firstName} ${item?.assessmentHasPatientProfile?.lastName}`,
   }));
+
+  if (!loading && assessmentDetail.hasMany) {
+    options.push({ value: "load-more", label: "Load More" });
+  }
 
   return (
     <div className="flex flex-col w-full pr-8 rounded-lg bg-gray-100 h-screen overflow-hidden">
       <div className="">
         <h1 className="text-3xl font-bold mb-4">Assessment Mgmt.</h1>
       </div>
-      {!loading && assessmentDetail.hasMany && (
-          <button onClick={handleLoadMore} className="load-more-button">
-            Load More
-          </button>
-        )}
       <div className="flex-1 p-4 flex flex-col list-disc pl-4 gap-6 overflow-auto h-full">
         {loading && (
           <RingLoader key={0} color="#007BFF" loading={true} size={40} />
         )}
         <label className="text-lg font-bold mb-2">Select Patient:</label>
-        <Select
-          menuIsOpen={true}
-          value={selectedPerson}
-          noOptionsMessage={() => "Uh-oh nothing matches your search"}
-          onChange={(selectedOption:any) => setSelectedPerson(selectedOption)}
+        <CustomSelect
           options={options}
+          value={selectedPerson}
           isLoading={loading}
-          isSearchable
-          classNamePrefix={"react-select"}
-          isClearable={true}
-        />
-       
+          onChange={(selectedOption:any) => {
+            if (selectedOption.value === "load-more") {
+              handleLoadMore();
+            } else {
+              setSelectedPerson(selectedOption);
+            }
+          }}
+          onMenuScrollToBottom={handleLoadMore} 
+        ></CustomSelect>
       </div>
     </div>
   );
 };
 
 export default Assessment_List;
-
-
