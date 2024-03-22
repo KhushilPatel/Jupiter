@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroller';
 import debounce from 'lodash.debounce';
-import { useApi } from '@/store/context';
+import { useApi } from "@/Contextstore/context";
 const PAGE_SIZE = 10;
 
 const Product_List = () => {

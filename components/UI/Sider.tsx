@@ -22,19 +22,25 @@ const router=useRouter()
             href="/patient"
             className={`block p-2 hover:bg-gray-700 transition duration-300 ease-in-out ${router.pathname === '/patient' ? 'bg-gray-700' : ''}`}
             >
-            Patient-List
+            Patient List
             </Link>
             <Link
             href="/product"
             className={`block p-2 hover:bg-gray-700 transition duration-300 ease-in-out ${router.pathname === '/product' ? 'bg-gray-700' : ''}`}
             >
-            Product-List
+            Product List
             </Link>
             <Link
             href="/Assessment"
             className={`block p-2 hover:bg-gray-700 transition duration-300 ease-in-out ${router.pathname === '/Assessment' ? 'bg-gray-700' : ''}`}
             >
-            Assessment-Mgmt.
+            Assessment Mgmt.
+            </Link>
+            <Link
+            href="/permission"
+            className={`block p-2 hover:bg-gray-700 transition duration-300 ease-in-out ${router.pathname === '/permission' ? 'bg-gray-700' : ''}`}
+            >
+           Permission Mgmt.
             </Link>
           </nav>
         </div>

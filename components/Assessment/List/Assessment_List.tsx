@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useApi } from "@/store/context";
+import { useApi } from "@/Contextstore/context";
 import { useCookies } from "react-cookie";
 import { RingLoader } from "react-spinners";
-// import Select from "react-select";
-import CustomSelect from "@/components/ReactSelect/CustomSelect";
+import CustomSelect from "@/components/UI/CustomSelect";
 const PAGE_SIZE = 20;
 
 const Assessment_List = () => {
@@ -65,31 +64,34 @@ const Assessment_List = () => {
     label: `${item?.assessmentHasPatientProfile?.firstName} ${item?.assessmentHasPatientProfile?.lastName}`,
   }));
 
-  if (!loading && assessmentDetail.hasMany) {
-    options.push({ value: "load-more", label: "Load More" });
+  // if (!loading && assessmentDetail.hasMany) {
+  //   options.push({ value: "load-more", label: "Load More" });
+  // }
+  if(loading && assessmentDetail.hasMany){
+    options.push( {label: <RingLoader key={0} color="#007BFF" loading={true} size={40} />});
   }
-
   return (
     <div className="flex flex-col w-full pr-8 rounded-lg bg-gray-100 h-screen overflow-hidden">
       <div className="">
         <h1 className="text-3xl font-bold mb-4">Assessment Mgmt.</h1>
       </div>
       <div className="flex-1 p-4 flex flex-col list-disc pl-4 gap-6 overflow-auto h-full">
-        {loading && (
-          <RingLoader key={0} color="#007BFF" loading={true} size={40} />
-        )}
+      
         <label className="text-lg font-bold mb-2">Select Patient:</label>
         <CustomSelect
           options={options}
           value={selectedPerson}
           isLoading={loading}
-          onChange={(selectedOption:any) => {
-            if (selectedOption.value === "load-more") {
-              handleLoadMore();
-            } else {
-              setSelectedPerson(selectedOption);
-            }
+          onChange={(selectedOption: any) => {
+            setSelectedPerson(selectedOption)
           }}
+          // onChange={(selectedOption:any) => {
+          //   if (selectedOption.value === "load-more") {
+          //     handleLoadMore();
+          //   } else {
+          //     setSelectedPerson(selectedOption);
+          //   }
+          // }}
           onMenuScrollToBottom={handleLoadMore} 
         ></CustomSelect>
       </div>

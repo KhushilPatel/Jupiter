@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "store/api.tsx", "pages/Home/home.tsx", "middleware.ts", "pages/dashboard.jsx", "pages/patient.tsx", "store/api.tsx", "store/context.jsx", "components/Assessment/List/Assessment_List.tsx", "components/Assessment/List/Assessment-List.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "Contextstore/api.tsx", "pages/Home/home.tsx", "middleware.ts", "pages/dashboard.jsx", "pages/patient.tsx", "Contextstore/api.tsx", "Contextstore/context.jsx", "components/Assessment/List/Assessment_List.tsx", "components/Assessment/List/Assessment-List.tsx", "components/PermissionMgmt/Edit"],
   "exclude": ["node_modules"]
 }

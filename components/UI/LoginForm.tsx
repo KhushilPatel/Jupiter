@@ -3,12 +3,11 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import {ZodType, any, z} from "zod"
 import {zodResolver} from '@hookform/resolvers/zod'
-import axios from 'axios';
 import OTPInput from 'react-otp-input';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import Loader  from './Loader'
-import { useApi } from '@/store/context';
+import { useApi } from "@/Contextstore/context";
 type formData={
     email:string;
     password:string;

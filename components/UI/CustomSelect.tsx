@@ -1,6 +1,5 @@
 import React from "react";
 import Select from "react-select";
-import { RingLoader } from "react-spinners";
 
 const CustomSelect = ({
   options,
@@ -12,7 +11,7 @@ const CustomSelect = ({
   return (
     <Select
       menuIsOpen={true}
-      value={value}
+      value={value}              
       noOptionsMessage={() => "Uh-oh nothing matches your search"}
       onChange={onChange}
       options={options}

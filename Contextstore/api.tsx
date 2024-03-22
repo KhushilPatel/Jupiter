@@ -58,9 +58,10 @@ export const adminUserManagementApi = async (payload: any) => {
  
  
  
-export const permissionManagementApi = async (payload: any) => {
+export const permissionManagementApi = async (payload: any,params:any) => {
     return axios.get(`${api}/admin-permission-group`, {
-        headers: payload
+        headers: payload,
+        params: params
     } )
 }
  
@@ -70,3 +71,4 @@ export const assessmentManagementApi = async (payload: any, params:any) => {
         params: params
     } )
 }
+
