@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "Contextstore/api.tsx", "pages/Home/home.tsx", "middleware.ts", "pages/dashboard.jsx", "pages/patient.tsx", "Contextstore/api.tsx", "Contextstore/context.jsx", "components/Assessment/List/Assessment_List.tsx", "components/Assessment/List/Assessment-List.tsx", "components/PermissionMgmt/Edit"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "Contextstore/api.tsx", "pages/Home/home.tsx", "middleware.ts", "pages/dashboard.jsx", "pages/patient.tsx", "Contextstore/api.tsx", "Contextstore/context.jsx", "components/Assessment/List/Assessment_List.tsx", "components/Assessment/List/Assessment-List.tsx", "components/PermissionMgmt/Edit", "redux_toolkit/store/checkboxDataSlice.ts"],
   "exclude": ["node_modules"]
 }

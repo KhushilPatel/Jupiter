@@ -21,7 +21,8 @@ export const checkboxDataSlice = createSlice({
     setisChecked: (state:any, action) => {
       const {key,value}=action.payload;
       state.isChecked[key] = value;
-    }
+    },
+    
   },
 });
 

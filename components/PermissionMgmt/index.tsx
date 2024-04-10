@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useApi } from "@/Contextstore/context";
 import { RingLoader } from "react-spinners";
-import SimpleDialogDemo from './Edit/index';
+import EditPermission from './Edit/index';
 import AddPermission from './Add/index';
 const PAGE_SIZE = 10;
 
@@ -56,6 +56,12 @@ const PermissionTable = () => {
     setCurrentPage(newPage);
   };
 
+  const handleRemoveItem = (itemId: string) => {
+   
+    const updatedList = permissionData.list.filter((item: any) => item.id !== itemId);
+    
+    setPermissionData({ ...permissionData, list: updatedList });
+  };
 
   return (
     <div className="ml-3 mt-4">
@@ -68,7 +74,7 @@ const PermissionTable = () => {
           </p>
         </div>
         <div className="mt-7 mr-3">
-        <AddPermission name={"Add Permission"}/>
+          <AddPermission name={"Add Permission"} />
         </div>
       </div>
       <div className="overflow-x-auto mt-2">
@@ -107,7 +113,7 @@ const PermissionTable = () => {
           <tbody className="text-gray-700 h-full overflow-auto">
             {permissionData.list.map((item: any) => (
               <tr key={item.id}>
-                <td className="text-left  py-3 px-4">{item?.role}</td>
+                <td className="text-left py-3 px-4">{item?.role}</td>
                 <td className="text-left py-3 px-4">{item?.name}</td>
                 <td className="text-left py-3 px-4">
                   {item?.updatedBy?.firstName ?? "-"}{" "}
@@ -124,8 +130,11 @@ const PermissionTable = () => {
                   {item?.status}
                 </td>
                 <td className="text-left py-3 px-4 flex gap-3">
-                  <SimpleDialogDemo name={"Edit Permission"}/>
-                  <button className="bg-red-500 hover:bg-red-700 text-white text-sm font-bold -py-2 -px-2  rounded">
+                  <EditPermission name={"Edit Permission"} Editdetails={item}/>
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white text-sm font-bold -py-2 -px-2  rounded"
+                    onClick={() => handleRemoveItem(item.id)}
+                  >
                     Delete
                   </button>
                 </td>

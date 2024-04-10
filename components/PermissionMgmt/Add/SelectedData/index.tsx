@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
-
+import { useSelector,useDispatch } from "react-redux";
 const Index = ({ selectedCheckboxData }: any) => {
   const { isChecked }: any = useSelector((state: any) => state.checkbox);
 

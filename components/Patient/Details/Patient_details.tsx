@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { RingLoader } from 'react-spinners';
-import { useApi } from '@/store/context';
+import { useApi } from '@/Contextstore/context';
 const Patient_details = () => {
   const [table, setTable]: any = useState({});
   const [loading, setLoading] = useState(false); // Set initial loading state to false

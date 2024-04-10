@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { RingLoader } from 'react-spinners';
 import Patient_details from '@/components/Patient/Details/Patient_details';
 import { Avatar } from "evergreen-ui"
-import { useApi } from "@/Contextstore/context";
+import { useApi } from "@/Contextstore/context"
 import debounce from 'lodash.debounce';
 const PAGE_SIZE = 10;
 const Patient_List = () => {
