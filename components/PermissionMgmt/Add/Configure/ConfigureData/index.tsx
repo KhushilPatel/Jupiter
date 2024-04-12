@@ -8,9 +8,10 @@ const ConfigureData = ({ data }: any) => {
   const dispatch = useDispatch();
   const [isChecked, setIsChecked]:any = useState({});
 
-  const handleCheckboxChange = (moduleName: string, action: string) => (event: any) => {
+  const handleCheckboxChange = (moduleName: string, action: string,event:any) => {
     const camelCaseModuleName = toCamelCase(moduleName); // Convert moduleName to camelCase
-  
+    console.log("camelCaseModuleName",camelCaseModuleName)
+    console.log("hcdaction",action)
     const updatedState = {
       ...isChecked,
       [camelCaseModuleName]: {
@@ -18,6 +19,7 @@ const ConfigureData = ({ data }: any) => {
         [action]: event.target.checked
       }
     };
+    console.log("updatedState",updatedState)
     setIsChecked(updatedState);
     dispatch(setisChecked({ key: camelCaseModuleName, value: updatedState[camelCaseModuleName] }));
   };
@@ -44,10 +46,12 @@ const ConfigureData = ({ data }: any) => {
                   control={
                     <Checkbox
                       checked={(isChecked[toCamelCase(item.moduleName)] || {})[action] || false}
-                      onChange={handleCheckboxChange(
-                        item.moduleName,
-                        action
+                      onClick={(e:any)=>handleCheckboxChange(
+                        item?.moduleName,
+                        action,
+                        e
                       )}
+                      
                     />
                   }
                   label={action}

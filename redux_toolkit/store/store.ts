@@ -5,7 +5,6 @@ export const store = configureStore({
   reducer: {
     checkbox: checkboxReducer,
    
- 
   },
 });
 

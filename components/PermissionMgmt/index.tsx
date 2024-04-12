@@ -130,7 +130,8 @@ const PermissionTable = () => {
                   {item?.status}
                 </td>
                 <td className="text-left py-3 px-4 flex gap-3">
-                  <EditPermission name={"Edit Permission"} Editdetails={item}/>
+                <AddPermission name={"Edit Permission"}  Editdetails={item}/>
+                  {/* <EditPermission name={"Edit Permission"} Editdetails={item}/> */}
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white text-sm font-bold -py-2 -px-2  rounded"
                     onClick={() => handleRemoveItem(item.id)}

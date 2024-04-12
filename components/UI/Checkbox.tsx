@@ -12,7 +12,7 @@ import { RingLoader } from 'react-spinners';
 
 export default function CheckboxLabels(props:any) {
     const [{ auth }] = useCookies(['auth']);
-    const { roleName } = props;
+    const { roleName ,defaultSelectedCheckboxData} = props;
     const [checkboxData, setCheckboxData]:any = useState([]);
     const dispatch = useDispatch();
     const selectedCheckboxData = useSelector((state:any) => state.checkbox.selectedCheckboxData);
@@ -53,6 +53,7 @@ export default function CheckboxLabels(props:any) {
         }
     };
 
+    console.log("defaultSelectedCheckboxData",defaultSelectedCheckboxData)
     const isSelected = (item:any) => {
         return selectedCheckboxData?.some((selectedItem:any) => selectedItem.moduleName === item.moduleName);
     };

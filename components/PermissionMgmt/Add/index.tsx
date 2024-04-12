@@ -18,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export interface AddPermissionDialogProps {
   open: boolean;
   onClose: () => void;
+  Editdetails: any; // Add Editdetails prop here
+  name:any
 }
 type formData = {
   name: string;
@@ -25,7 +27,7 @@ type formData = {
 };
 
 function AddPermissionDialog(props: AddPermissionDialogProps) {
-  const { onClose, open } = props;
+  const { onClose, open ,Editdetails,name} = props;
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = React.useState("");
   const [selectedRole, setSelectedRole] = React.useState("");
@@ -38,13 +40,14 @@ function AddPermissionDialog(props: AddPermissionDialogProps) {
     (state: any) => state.checkbox
   );
   console.log("selectedcheckbox data", selectedCheckboxData);
-
+console.log("newwwEditdetails",Editdetails?.name)
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (open) {
-      setDescription("");
-      setSelectedRole("");
+      setValue('name', Editdetails?.name || '');
+      setValue('description', Editdetails?.description || '');
+      setSelectedRole(Editdetails?.role || '');
       setConfigureKey(Date.now());
       setDataKey(Date.now());
       dispatch(clearSelectedCheckboxData()); // Dispatch action to clear selected checkbox data
@@ -59,44 +62,61 @@ function AddPermissionDialog(props: AddPermissionDialogProps) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<formData>({ resolver: zodResolver(schema) });
 
 
 
-  const toCamelCase = (str: string) => {
-    return str.replace(/\s(.)/g, function($1) { return $1.toUpperCase(); })
-              .replace(/\s/g, '')
-              .replace(/^(.)/, function($1) { return $1.toLowerCase(); });
-  };
+  function toCamelCase(inputString:any) {
+    return inputString.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+  }
   
-  const actions = selectedCheckboxData
-    .filter((checkbox: any) => {
-      const moduleName = toCamelCase(checkbox?.moduleName.replace(/\s/g, ""));
-      return isChecked &&
-        isChecked[moduleName] &&
-        isChecked[moduleName][checkbox.action];
-    })
-    .map((checkbox: any) => ({
-      action: checkbox?.action,
-      moduleName: checkbox?.moduleName?.toLowerCase(),
-    }));
-  
-
+  const actions: any[] = [];
+  for (const moduleName in isChecked) {
+    const camelModuleName = toCamelCase(moduleName); // Convert module name to camelCase
+    const selectedActions = [];
+    for (const action in isChecked[moduleName]) {
+      if (isChecked[moduleName][action]) {
+        selectedActions.push(action);
+      }
+    }
+    if (selectedActions.length > 0) {
+      actions.push({
+        moduleName: camelModuleName, // Use camelCase module name
+        action: selectedActions
+      });
+    }
+  }
   
   console.log("actions", actions);
 
-  const permissions = selectedCheckboxData
-  .filter((checkbox: any) => {
-    const moduleName = toCamelCase(checkbox?.moduleName.replace(/\s/g, ""));
-    return isChecked &&
-      isChecked[moduleName] &&
-      isChecked[moduleName][checkbox.action];
-  })
-  .map((checkbox: any) => (`${checkbox.moduleName.replace(/\s+/g, '_').toLowerCase()}_${checkbox.action}`));
+
+
+  function toSnakeCase(inputString:any) {
+    return inputString.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+  }
+  
+  const permissions:any = [];
+  for (const moduleName in isChecked) {
+    for (const action in isChecked[moduleName]) {
+      if (isChecked[moduleName][action]) {
+        const formattedModuleName = toSnakeCase(moduleName);
+        const formattedAction = toSnakeCase(action);
+        permissions.push(`${formattedModuleName}_${formattedAction}`);
+      }
+    }
+  }
 
 
 console.log("permissions", permissions);
+
+// Filter out duplicate permissions
+const filteredPermissions = Array.from(new Set(permissions));
+
+console.log("filteredPermissions", filteredPermissions);
+
+
 
 
   const handleClose = async (formData: formData) => {
@@ -138,10 +158,10 @@ console.log("permissions", permissions);
     { value: "PATIENT", label: "Patient" },
     { value: "PRESCRIBER_ADMIN", label: "Prescriber Admin" },
   ];
-
+  const currentSelection = [{label: selectedRole, value: selectedRole}];
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="lg">
-      <DialogTitle className="text-center">Add Permissions</DialogTitle>
+      <DialogTitle className="text-center">{name}</DialogTitle>
       <form onSubmit={handleSubmit(handleClose)}>
         <div className="flex">
           <div className="p-4 border-r-2 w-10/12">
@@ -165,8 +185,10 @@ console.log("permissions", permissions);
                 <label htmlFor="role">Role:</label>
                 <Select
                   className="w-[150px]"
+                  value={currentSelection}
                   options={options}
                   onChange={handleRoleChange}
+
                 />
               </div>
             </div>
@@ -194,6 +216,7 @@ console.log("permissions", permissions);
                   <ConfigurePermissions
                     key={configureKey}
                     roleName={selectedRole}
+                    defaultSelectedCheckboxData={Editdetails?.permissions}
                   />
                 </div>
                 <div className="flex justify-end w-2/4">
@@ -221,13 +244,20 @@ console.log("permissions", permissions);
   );
 }
 
-export default function AddPermissionDialogDemo({ name }: any) {
+export default function AddPermissionDialogDemo({ name , Editdetails}: any) {
+
   const [open, setOpen] = React.useState(false);
+    const [currentEditDetails, setCurrentEditDetails] = React.useState(null); // Change initial state to null
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    React.useEffect(() => {
+        console.log('currentEditDetails updated:', currentEditDetails);
+    }, [currentEditDetails]);
 
+    const handleClickOpen = (details: any) => {
+        console.log('handleClickOpen called with details:', details);
+        setCurrentEditDetails(details);
+        setOpen(true);
+    };
   const handleClose = async () => {
     setOpen(false);
   };
@@ -240,7 +270,14 @@ export default function AddPermissionDialogDemo({ name }: any) {
       >
         {name}
       </button>
-      <AddPermissionDialog open={open} onClose={handleClose} />
+     
+                <AddPermissionDialog
+                name={name}
+                    Editdetails={Editdetails}
+                    open={open}
+                    onClose={handleClose}
+                />
+         
     </div>
   );
 }

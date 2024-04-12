@@ -4,7 +4,7 @@ export const middleware = (request: NextRequest) => {
     const path = request.nextUrl.pathname
     // console.log("routes coming in middleware", path);
     const isPublicPath = path === '/login' || path==='/'
-    const isPrivatePath = path === '/dashboard' || path==='/about' || path==='/patient' || path==='/product'
+    const isPrivatePath = path === '/dashboard' || path==='/about' || path==='/patient' || path==='/product' || path==='/Assessment' || path==='/permission' || path==='/home'
     
     const auth = request.cookies.get('auth')?.value || ''
     console.log(auth)
