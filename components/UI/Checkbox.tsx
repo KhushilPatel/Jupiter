@@ -52,11 +52,17 @@ export default function CheckboxLabels(props:any) {
             dispatch(removeSelectedCheckboxData(item));
         }
     };
+    function capitalizeFirstLetter(str:any) {
+        return str.replace(/\b\w/g, (char:any) => char.toUpperCase());
+    }
+    
+    console.log("defaultSelectedCheckboxData", defaultSelectedCheckboxData.map((item:any) => capitalizeFirstLetter(item.moduleName)));
 
-    console.log("defaultSelectedCheckboxData",defaultSelectedCheckboxData)
     const isSelected = (item:any) => {
-        return selectedCheckboxData?.some((selectedItem:any) => selectedItem.moduleName === item.moduleName);
+        return defaultSelectedCheckboxData.some((selectedItem:any) => capitalizeFirstLetter(selectedItem.moduleName) === item.moduleName);
     };
+    
+    
 
     return (
         <FormGroup className={`min-w-full bg-white rounded-lg ${loading ? 'opacity-50' : ''}`}>
@@ -70,7 +76,7 @@ export default function CheckboxLabels(props:any) {
                     key={index}
                     control={
                         <Checkbox
-                            checked={isSelected(item)}
+                            defaultChecked={isSelected(item)}
                             onChange={(event) => handleCheckboxClick(item, event.target.checked)
                             }
                         />

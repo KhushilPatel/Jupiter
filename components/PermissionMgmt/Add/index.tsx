@@ -40,7 +40,7 @@ function AddPermissionDialog(props: AddPermissionDialogProps) {
     (state: any) => state.checkbox
   );
   console.log("selectedcheckbox data", selectedCheckboxData);
-console.log("newwwEditdetails",Editdetails?.name)
+console.log("newwwEditdetails",Editdetails)
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -115,7 +115,6 @@ console.log("permissions", permissions);
 const filteredPermissions = Array.from(new Set(permissions));
 
 console.log("filteredPermissions", filteredPermissions);
-
 
 
 
@@ -216,7 +215,7 @@ console.log("filteredPermissions", filteredPermissions);
                   <ConfigurePermissions
                     key={configureKey}
                     roleName={selectedRole}
-                    defaultSelectedCheckboxData={Editdetails?.permissions}
+                    defaultSelectedCheckboxData={Editdetails?.permissionData}
                   />
                 </div>
                 <div className="flex justify-end w-2/4">
