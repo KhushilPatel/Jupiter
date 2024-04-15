@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useApi } from "@/Contextstore/context";
 import { RingLoader } from "react-spinners";
-import EditPermission from './Edit/index';
+
 import AddPermission from './Add/index';
 const PAGE_SIZE = 10;
 

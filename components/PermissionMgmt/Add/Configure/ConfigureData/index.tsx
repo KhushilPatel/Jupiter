@@ -7,11 +7,10 @@ import { setisChecked } from "@/redux_toolkit/store/checkboxDataSlice";
 const ConfigureData = ({ data }: any) => {
   const dispatch = useDispatch();
   const [isChecked, setIsChecked]:any = useState({});
-
+console.log("data",data)
   const handleCheckboxChange = (moduleName: string, action: string,event:any) => {
-    const camelCaseModuleName = toCamelCase(moduleName); // Convert moduleName to camelCase
-    console.log("camelCaseModuleName",camelCaseModuleName)
-    console.log("hcdaction",action)
+    const camelCaseModuleName = toCamelCase(moduleName); 
+  
     const updatedState = {
       ...isChecked,
       [camelCaseModuleName]: {
@@ -19,7 +18,7 @@ const ConfigureData = ({ data }: any) => {
         [action]: event.target.checked
       }
     };
-    console.log("updatedState",updatedState)
+
     setIsChecked(updatedState);
     dispatch(setisChecked({ key: camelCaseModuleName, value: updatedState[camelCaseModuleName] }));
   };
@@ -30,16 +29,18 @@ const ConfigureData = ({ data }: any) => {
               .replace(/\s/g, '')
               .replace(/^(.)/, function($1) { return $1.toLowerCase(); });
   };
-
+  function capitalizeFirstLetter(str:any) {
+    return str.replace(/\b\w/g, (char:any) => char.toUpperCase());
+}
   return (
     <div className="mt-4 h-[500px] overflow-scroll">
       {data?.map((item: any, index: any) => (
         <div key={index} className="border p-4 mb-4 w-[500px]">
-          <h1 className="p-4 font-bold">{item.moduleName}</h1>
+          <h1 className="p-4 font-bold">{capitalizeFirstLetter(item.moduleName)}</h1>
 
           <div className="mt-2">
             {item?.action?.map((action: any, actionIndex: any) => {
-              const checkboxKey = `${toCamelCase(item.moduleName)}-${action}`;
+             
               return (
                 <FormControlLabel
                   key={actionIndex}

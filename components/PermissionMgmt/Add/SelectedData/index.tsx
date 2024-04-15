@@ -9,7 +9,6 @@ const Index = ({ selectedCheckboxData }: any) => {
               .replace(/\s/g, '')
               .replace(/^(.)/, function($1) { return $1.toLowerCase(); });
   };
-
   return (
     <div className="mr-28 w-1/2">
       <h1>Selected</h1>

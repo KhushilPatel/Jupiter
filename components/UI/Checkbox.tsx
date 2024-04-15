@@ -1,5 +1,3 @@
-// CheckboxLabels.js
-
 import React, { useEffect, useState } from 'react';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,15 +10,28 @@ import { RingLoader } from 'react-spinners';
 
 export default function CheckboxLabels(props:any) {
     const [{ auth }] = useCookies(['auth']);
-    const { roleName ,defaultSelectedCheckboxData} = props;
+    const { roleName, defaultSelectedCheckboxData } = props;
     const [checkboxData, setCheckboxData]:any = useState([]);
     const dispatch = useDispatch();
     const selectedCheckboxData = useSelector((state:any) => state.checkbox.selectedCheckboxData);
     const [loading, setLoading] = useState(false);
+    const dispatchedModuleNames = new Set();
 
     useEffect(() => {
         fetchCheckboxData();
     }, [roleName]);
+
+    useEffect(() => {
+        // Set the initial checked state for checkboxes
+        if (defaultSelectedCheckboxData) {
+            defaultSelectedCheckboxData.forEach((item:any) => {
+                if (!dispatchedModuleNames.has(item.moduleName)) {
+                    dispatch(addSelectedCheckboxData(item));
+                    dispatchedModuleNames.add(item.moduleName);
+                }
+            });
+        }
+    }, [defaultSelectedCheckboxData]);
 
     const fetchCheckboxData = async () => {
         try {
@@ -55,14 +66,9 @@ export default function CheckboxLabels(props:any) {
     function capitalizeFirstLetter(str:any) {
         return str.replace(/\b\w/g, (char:any) => char.toUpperCase());
     }
-    
-    console.log("defaultSelectedCheckboxData", defaultSelectedCheckboxData.map((item:any) => capitalizeFirstLetter(item.moduleName)));
-
     const isSelected = (item:any) => {
-        return defaultSelectedCheckboxData.some((selectedItem:any) => capitalizeFirstLetter(selectedItem.moduleName) === item.moduleName);
+        return selectedCheckboxData.some((selectedItem:any) =>capitalizeFirstLetter( selectedItem.moduleName )=== item.moduleName);
     };
-    
-    
 
     return (
         <FormGroup className={`min-w-full bg-white rounded-lg ${loading ? 'opacity-50' : ''}`}>
@@ -77,14 +83,12 @@ export default function CheckboxLabels(props:any) {
                     control={
                         <Checkbox
                             defaultChecked={isSelected(item)}
-                            onChange={(event) => handleCheckboxClick(item, event.target.checked)
-                            }
+                            onChange={(event) => handleCheckboxClick(item, event.target.checked)}
                         />
                     }
                     label={item?.moduleName}
                 />
             ))}
-         
         </FormGroup>
     );
 }

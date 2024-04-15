@@ -29,20 +29,17 @@ type formData = {
 function AddPermissionDialog(props: AddPermissionDialogProps) {
   const { onClose, open ,Editdetails,name} = props;
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = React.useState("");
+ 
   const [selectedRole, setSelectedRole] = React.useState("");
   const [configureKey, setConfigureKey] = React.useState(Date.now());
   const [dataKey, setDataKey] = React.useState(Date.now());
   const { isChecked }: any = useSelector((state: any) => state.checkbox);
-  console.log("Add permission", isChecked);
+
   const [{ auth }] = useCookies(['auth']);
   const { selectedCheckboxData }: any = useSelector(
     (state: any) => state.checkbox
   );
-  console.log("selectedcheckbox data", selectedCheckboxData);
-console.log("newwwEditdetails",Editdetails)
   const dispatch = useDispatch();
-
   React.useEffect(() => {
     if (open) {
       setValue('name', Editdetails?.name || '');
@@ -89,7 +86,7 @@ console.log("newwwEditdetails",Editdetails)
     }
   }
   
-  console.log("actions", actions);
+
 
 
 
@@ -109,18 +106,18 @@ console.log("newwwEditdetails",Editdetails)
   }
 
 
-console.log("permissions", permissions);
+
 
 // Filter out duplicate permissions
 const filteredPermissions = Array.from(new Set(permissions));
 
-console.log("filteredPermissions", filteredPermissions);
+
 
 
 
   const handleClose = async (formData: formData) => {
-    console.log("It worked", formData);
-    console.log(selectedRole);
+    
+    
     onClose();
     try {
       setLoading(true)
@@ -249,11 +246,11 @@ export default function AddPermissionDialogDemo({ name , Editdetails}: any) {
     const [currentEditDetails, setCurrentEditDetails] = React.useState(null); // Change initial state to null
 
     React.useEffect(() => {
-        console.log('currentEditDetails updated:', currentEditDetails);
+       
     }, [currentEditDetails]);
 
     const handleClickOpen = (details: any) => {
-        console.log('handleClickOpen called with details:', details);
+      
         setCurrentEditDetails(details);
         setOpen(true);
     };
