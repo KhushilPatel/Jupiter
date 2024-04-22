@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useDispatch, useSelector } from 'react-redux';
 import { setisChecked } from "@/redux_toolkit/store/checkboxDataSlice";
 
-const ConfigureData = ({ data, defaultSelectedCheckboxData }: any) => {
+const ConfigureData = ({ data }: any) => {
   const dispatch = useDispatch();
   const [isChecked, setIsChecked]: any = useState({});
+
+  useEffect(() => {
+    // Initialize state with all checkboxes checked
+    const initialState:any = {};
+    data.forEach((item: any) => {
+      const camelCaseModuleName = toCamelCase(item.moduleName);
+      initialState[camelCaseModuleName] = {};
+      item.action.forEach((action: string) => {
+        initialState[camelCaseModuleName][action] = true;
+      });
+    });
+    setIsChecked(initialState);
+  }, [data]);
+
   const { checkboxData }: any = useSelector(
     (state: any) => state.checkbox
   );
 
   console.log("checkboxData", checkboxData);
-console.log("data",data)
+  console.log("data",data)
   function capitalizeFirstLetter(str: string | undefined): string {
     if (typeof str === 'string' && str.trim().length > 0) {
       return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -51,10 +65,7 @@ console.log("data",data)
   
   console.log("Filtered Data:", filteredData);
 
-  const isSelected = (item:any) => {
   
-       return true;
-  }
   return (
     <div className="mt-4 h-[500px] overflow-scroll">
       {filteredData?.map((item: any, index: any) => (
@@ -68,7 +79,7 @@ console.log("data",data)
                   key={actionIndex}
                   control={
                     <Checkbox
-                    defaultChecked={true}
+                      defaultChecked={true}
                       checked={(isChecked[toCamelCase(item.moduleName)] || {})[action] || false}
                       onClick={(e: any) => handleCheckboxChange(
                         item?.moduleName,
