@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useApi } from "@/Contextstore/context";
 import { RingLoader } from "react-spinners";
-
+import axios from "axios";
 import AddPermission from './Add/index';
 const PAGE_SIZE = 10;
 
@@ -34,17 +34,20 @@ const PermissionTable = () => {
         orderBy: "createdAt|desc",
         include: "updatedBy",
       };
-      const response = await api.permissionManagementApi(payload, params);
+      const response = await axios.get(`https://jupiter.cmdev.cc/admin-permission-group`, {
+        headers: payload,
+        params: params
+    } )
       setPermissionData(response.data);
-      setLoading(false);
+      setLoading(false); 
     } catch (error) {
-      console.error("Error fetching Permission details:", error);
+      console.error("Error fetching Permission details:", error);  
       setLoading(false);
-    }
-  };
+    } 
+  };         
 
   const formatDate = (dateString: any) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString);  
     return date.toLocaleString();
   };
 
@@ -63,6 +66,7 @@ const PermissionTable = () => {
     setPermissionData({ ...permissionData, list: updatedList });
   };
 
+  console.log("permissionData",permissionData.list)
   return (
     <div className="ml-3 mt-4">
       <div className="flex justify-between">
@@ -139,13 +143,13 @@ const PermissionTable = () => {
                     Delete
                   </button>
                 </td>
-              </tr>
+              </tr> 
             ))}
           </tbody>
         </table>
         <div className="flex justify-center mt-4 ">
           {Array.from({ length: getTotalPages() }).map((_, index) => (
-            <button
+            <button 
               key={index}
               onClick={() => handlePageChange(index + 1)}
               className={`mx-2 rounded-1xl ${
@@ -157,7 +161,7 @@ const PermissionTable = () => {
               {index + 1}
             </button>
           ))}
-        </div>
+        </div> 
       </div>
     </div>
   );

@@ -39,9 +39,10 @@ function AddPermissionDialog(props: AddPermissionDialogProps) {
   const { selectedCheckboxData }: any = useSelector(
     (state: any) => state.checkbox
   );
+
   const dispatch = useDispatch();
   React.useEffect(() => {
-    if (open) {
+    if (open) { 
       setValue('name', Editdetails?.name || '');
       setValue('description', Editdetails?.description || '');
       setSelectedRole(Editdetails?.role || '');
@@ -229,7 +230,7 @@ const filteredPermissions = Array.from(new Set(permissions));
               </div>
 
               {/* Configure Data */}
-              <ConfigureData key={dataKey} data={selectedCheckboxData} />
+              <ConfigureData key={dataKey} data={selectedCheckboxData} defaultSelectedCheckboxData={Editdetails?.permissionData} />
             </div>
           </div>
           {/* Selected Checkbox */}
